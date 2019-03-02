@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import BookList from './BookList.js'
 
-class App extends Component {
+class BooksContainer extends Component {
 
   state = {
     searchTerm: '',
@@ -16,25 +17,23 @@ class App extends Component {
 
     fetch(`https://www.googleapis.com/books/v1/volumes?q=${this.state.searchTerm}`)
       .then(res => res.json())
-      .then(json => this.handleSearchResults(json))
+      .then(json => this.setState({searchResults: json.items}))
   }
-
-  handleSearchResults = results => {
-    this.setState({searchResults: results.items})
-  }
-
 
   render() {
     return (
       <div>
-        <h1>BOOK FINDER</h1>
-        <form onSubmit={this.handleSubmit}>
-          <input type='text' placeholder="Search by book title or author..." onChange={this.handleChange} />
-          <input type='submit' value='Search' />
+        <div className='centered title-text'>
+          <h1>BOOK FINDER</h1>
+        </div>
+        <form className='centered' onSubmit={this.handleSubmit}>
+          <input type='text' className='search-bar' placeholder="Search by book title or author..." onChange={this.handleChange} />
+          <input type='submit' className='submit-button' value='Search' />
         </form>
+        <BookList />
       </div>
     );
   }
 }
 
-export default App;
+export default BooksContainer;
